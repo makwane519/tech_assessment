@@ -1,0 +1,8 @@
+<div class="header">
+  <div>
+    Welcome <%= current_user.name %>!
+  </div>
+  <div class="logout-btn">
+    <%= button_to "logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+  </div>
+</div>

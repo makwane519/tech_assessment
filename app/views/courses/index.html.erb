@@ -1,0 +1,44 @@
+<div class="wrapper">
+  <%= render 'layouts/sidenavbar' %>
+  <div class="main_content">
+      <div class="header">
+        <%= render 'layouts/navbar' %>
+      </div>  
+      <div class="info">
+        <h3>Courses</h3>
+        <% if current_user.instructor? %>
+          <%= link_to 'New Course', new_course_path, class: "btn btn-info" %>
+        <% end %>
+          <div class="row g-3" style="margin-top: 20px;">
+            <% @courses.each do |course| %>
+              <div class="col-md-4">
+                <div class="card shadow-sm rounded-3">
+                  <% first_color = ["#ff9a9e", "#fad0c4", "#ffdde1", "#fbc2eb", "#a1c4fd", "#c2e9fb"].sample %>
+                  <% second_color = ["#ffdde1", "#fbc2eb", "#a1c4fd", "#c2e9fb", "#ff9a9e", "#fad0c4"].sample %>
+                  <div class="gradient-box" style="background:linear-gradient(45deg, <%= first_color %>, <%= second_color %>);">
+                    <% fav_color = current_user.favorites.find_by(course_id: course.id).present? ? '#ff0000' : '#f5f5f5' %>
+                    <%= link_to add_to_favorite_dashboard_index_path(course_id: course.id) do %>
+                      <i class="fa fa-heart heart-icon" style="color:<%= fav_color %>;"></i>
+                    <% end %>
+                    <%= course.title %>
+                  </div>
+                  <div class="card-body">
+                    <span class="badge" style="background:<%= course.status == 'active' ? '#41ef68' : '#777777' %>">
+                      <strong><%= course.status == 'active' ? 'Open' : 'Closed' %></strong>
+                    </span>
+                    <h5 class="card-title mt-2"><strong>Course:</strong> <%= course.title %></h5>
+                    <p class="card-text">
+                      <strong>Code:</strong> <%= course.code %> <br>
+                      <strong>Term:</strong> <%= course.term.name %>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <%= link_to 'View Details', course_path(course), class: "btn btn-info" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+      </div>
+  </div>
+</div>

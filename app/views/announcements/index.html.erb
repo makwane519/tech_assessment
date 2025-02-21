@@ -1,0 +1,40 @@
+<div class="wrapper">
+  <%= render 'layouts/sidenavbar' %>
+  <div class="main_content">
+      <div class="header">
+        <%= render 'layouts/navbar' %>
+      </div>  
+      <div class="info">
+        <% if current_user.admin? %>
+          <%= link_to 'New Announcement', new_announcement_path, class: "btn btn-info" %>
+        <% end %>
+        <div class="row g-3">
+          <h3>Announcements</h3>
+          <% @announcements.each do |announcement| %>
+            <div class="col-md-4">
+              <div class="card shadow-sm rounded-3">
+                 <% if announcement.image.attached? %>
+                    <img src="<%= url_for(announcement.image) %>" class="img-box" alt="Announcement Image">
+                  <% else %>
+                    <% first_color = ["#ff9a9e", "#fad0c4", "#ffdde1", "#fbc2eb", "#a1c4fd", "#c2e9fb"].sample %>
+                    <% second_color = ["#ffdde1", "#fbc2eb", "#a1c4fd", "#c2e9fb", "#ff9a9e", "#fad0c4"].sample %>
+                    <div class="gradient-box" style="background:linear-gradient(45deg, <%= first_color %>, <%= second_color %>);">
+                      <%= announcement.title %>
+                    </div>
+                  <% end %>
+                <div class="card-body">
+                  <h5 class="card-title mt-2"><%= announcement.title %></h5>
+                  <p class="card-text">
+                    <%= announcement.content %>
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <%= link_to 'View Details', announcement_path(announcement), class: "btn btn-info" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+  </div>
+</div>
